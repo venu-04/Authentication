@@ -1,4 +1,5 @@
 import express from "express";
+import bodyParser from "body-parser";
 // import dotenv from  'dotenv';
 import authRoutes from  './routes/auth.routes.js';
 import connectToMongoDB from "./db.js";
@@ -11,6 +12,7 @@ const PORT = 3001;
 
 
 app.use(express.json()); //middleware to parse incoming requests with json payloads
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use("/api/auth",authRoutes)
 
 // app.get("/",(req,res) => {
