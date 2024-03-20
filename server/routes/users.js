@@ -35,7 +35,7 @@ export const signup= async(req,res) => {
         user_id: newUser.user_id,
         fullname:newUser.fullname,
         username:newUser.username,
-        username:newUser.email
+        email:newUser.email
     });
     }else{
         res.status(400).json({error:"invalid user data"});
@@ -56,15 +56,12 @@ export const login = async(req,res) =>{
    try {
     const { username, password } = req.body;
     const user = await User.findOne({username});
-    
-    // const salt = await bcrypt.genSalt(10);
-    // const hashedpassword = await bcrypt.hash(user.password,salt);
-
-    //  const ispassword = await bcrypt.compare(password,user.password || "")
+   
+    const ispassword = await bcrypt.compare(password,user.password || "")
 
 
-    console.log(user)
-    if(!user){
+    console.log(user);
+    if(!user || !ispassword){
         return res.status(400).json("invalid username and password")
     }
 
@@ -87,5 +84,16 @@ export const login = async(req,res) =>{
 
 
 export const logout= (req,res) => {
-    res.send("logout user")
+   
+    try {
+         res.clearCookie("jwt token",{
+        httpOnly:true,
+        sameSite:'strict',
+    });
+        
+    } catch (error) {
+        console.log("error in logout controller",error.message);
+        res.status(500).json({error:"server error"});   
+    }
+    
 };

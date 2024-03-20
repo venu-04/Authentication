@@ -12,7 +12,7 @@ const PORT = 3001;
 
 
 app.use(express.json()); //middleware to parse incoming requests with json payloads
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: true }));
 app.use("/api/auth",authRoutes)
 
 // app.get("/",(req,res) => {
